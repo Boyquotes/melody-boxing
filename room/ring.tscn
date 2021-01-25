@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://sprite/left_stance.png" type="Texture" id=1]
+[ext_resource path="res://bg/stage.png" type="Texture" id=2]
+[ext_resource path="res://music/pancake.ogg" type="AudioStream" id=3]
+[ext_resource path="res://sprite/note.png" type="Texture" id=4]
+[ext_resource path="res://room/ring.gd" type="Script" id=5]
+
+[node name="stage" type="Node2D"]
+position = Vector2( 511.284, 250.194 )
+scale = Vector2( 0.50406, 0.50406 )
+z_index = -1000
+script = ExtResource( 5 )
+
+[node name="spr_stage" type="Sprite" parent="."]
+show_behind_parent = true
+position = Vector2( 0.102356, -8.68112 )
+texture = ExtResource( 2 )
+
+[node name="spr_note" type="Sprite" parent="."]
+visible = false
+show_behind_parent = true
+position = Vector2( 1052.14, 224.979 )
+scale = Vector2( 0.951714, 0.951714 )
+texture = ExtResource( 4 )
+
+[node name="spr_left" type="Sprite" parent="."]
+position = Vector2( -214.573, 111.725 )
+texture = ExtResource( 1 )
+offset = Vector2( -57.5481, 131.954 )
+
+[node name="spr_right" type="Sprite" parent="."]
+position = Vector2( 235.617, 111.725 )
+scale = Vector2( -1, 1 )
+texture = ExtResource( 1 )
+offset = Vector2( -57.5481, 131.954 )
+
+[node name="combo" type="RichTextLabel" parent="."]
+margin_left = -14.4072
+margin_top = -425.0
+margin_right = 20.5928
+margin_bottom = -409.0
+rect_scale = Vector2( 10, 10 )
+text = "0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/pancake.ogg-2a8370e263bdf56d55af43736add6fda.oggstr"
+
+[deps]
+
+source_file="res://music/pancake.ogg"
+dest_files=[ "res://.import/pancake.ogg-2a8370e263bdf56d55af43736add6fda.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
