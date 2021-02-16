@@ -19,6 +19,10 @@ config/name="Melody-boxing"
 run/main_scene="res://room/ring.tscn"
 config/icon="res://icon.png"
 
+[debug]
+
+settings/fps/force_fps=60
+
 [rendering]
 
 quality/driver/driver_name="GLES2"
