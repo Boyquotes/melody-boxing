@@ -194,7 +194,6 @@ func dealDamage(attacker, victim, perf, mult = 1):
 	if(perf):
 		judgeMult = attacker.maxJudgeMult;
 	var damage = attacker.baseAtk * judgeMult * attacker.maxSpMult * (1+attacker.sp/attacker.maxSp) * mult;
-	print(damage);
 	victim.hp -= damage;
 
 func increaseCombo():
