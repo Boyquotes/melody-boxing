@@ -19,15 +19,16 @@ config/name="Melody-boxing"
 run/main_scene="res://room/ring.tscn"
 config/icon="res://icon.png"
 
-[autoload]
-
-Global="*res://script/Global.gd"
-
 [debug]
 
 settings/fps/force_fps=60
 
+[display]
+
+window/stretch/mode="2d"
+window/stretch/aspect="keep"
+
 [rendering]
 
 quality/driver/driver_name="GLES2"
-environment/default_environment="res://default_env.tres"
+vram_compression/import_etc=true

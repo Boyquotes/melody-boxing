@@ -64,7 +64,17 @@ func _draw():
 		x_ratio.insert(i, clamp( -(song_pos - (song_start + song_offset + (song_beat+i) * (1/song_bpf))) / 100.0 , 0.0, 1.0) ) ;
 		if(x_ratio[i] != 1):
 			draw_texture($spr_note.texture , Vector2(END_POS.x + (START_POS.x - END_POS.x) * x_ratio[i], START_POS.y));
-		
+	
+	draw_rect(Rect2(Vector2(-position.x*2+10,-position.y*2+10), Vector2(800, 60)), Color.darkgray);
+	draw_rect(Rect2(Vector2(position.x*2-10,-position.y*2+10), Vector2(-800, 60)), Color.darkgray);
+	draw_rect(Rect2(Vector2(-position.x*2+10,-position.y*2+10), Vector2(800*(player.hp/player.maxHp), 60)), Color.green);
+	draw_rect(Rect2(Vector2(position.x*2-10,-position.y*2+10), Vector2(-800*(enemy.hp/enemy.maxHp), 60)), Color.green);
+
+	draw_rect(Rect2(Vector2(-position.x*2+10,-position.y*2+80), Vector2(800, 30)), Color.darkgray);
+	draw_rect(Rect2(Vector2(position.x*2-10,-position.y*2+80), Vector2(-800, 30)), Color.darkgray);
+	draw_rect(Rect2(Vector2(-position.x*2+10,-position.y*2+80), Vector2(800*(player.sp/player.maxSp), 30)), Color.orange);
+	draw_rect(Rect2(Vector2(position.x*2-10,-position.y*2+80), Vector2(-800*(enemy.sp/enemy.maxSp), 30)), Color.orange);
+
 #	x_ratio = -(song_pos - (song_start + song_offset + song_beat * (1/song_bpf))) / 100.0;
 #	print_debug(x_ratio);
 
@@ -83,18 +93,18 @@ func _input(ev):
 	if ev.is_action_pressed(attack_btn) || ev.is_action_pressed(defend_btn) :
 		if(song_pos < check_window + JD_PERFECT &&
 			song_pos > check_window - JD_PERFECT):
-			combo += 1;
-			song_beat += 1;
+			increaseCombo();
+			increaseBeat();
 			judge = "Perfect";
 			if(ev.is_action_pressed(attack_btn)):
-				player_attack();
+				player_attack(true);
 			if(ev.is_action_pressed(defend_btn)):
-				player_defend();
+				player_defend(true);
 
 		elif(song_pos < check_window + JD_FAIR &&
 			song_pos > check_window - JD_FAIR):
-			combo += 1;
-			song_beat += 1;
+			increaseCombo();
+			increaseBeat();
 			judge = "Good";
 			if(ev.is_action_pressed(attack_btn)):
 				player_attack();
@@ -103,8 +113,8 @@ func _input(ev):
 
 		elif(song_pos < check_window + JD_BAD &&
 			song_pos > check_window - JD_BAD):
-			combo = 0;
-			song_beat += 1;
+			resetCombo();
+			increaseBeat();
 			judge = "Bad";
 			player_miss();
 
@@ -121,12 +131,15 @@ func stance_up():
 func stance_down():
 	player.set_stance(player.Stance.DOWN);
 
-func player_attack():
+func player_attack(perf = false):
 	if(enemy.pose == enemy.Pose.IDLE):
 		#If enemy is attacking
+		var tempStance =  player.stance;
 		player.set_stance(enemy.stance);
 		player.hit(true);
 		enemy.attack(true);
+		dealDamage(enemy, player, true);
+		player.set_stance(tempStance);
 	else:
 		if(enemy.pose == enemy.Pose.DEFEND && player.stance != enemy.stance):
 			#If enemy blocks unsuccessfully
@@ -134,6 +147,7 @@ func player_attack():
 			enemy.set_stance(player.stance);
 			player.attack(true);
 			enemy.hit(true);
+			dealDamage(player, enemy, perf);
 			enemy.set_stance(tempStance);
 		else:
 			#If enemy blocks attack
@@ -143,28 +157,53 @@ func player_attack():
 	enemy.cpu_change_stance();
 	
 	
-func player_defend():
+func player_defend(perf = false):
 	if(enemy.pose == enemy.Pose.IDLE):
 		if(enemy.stance == player.stance):
 			#If player blocks successfully
 			player.defend(true);
 			enemy.attack(false);
+			
+			if(!perf):
+				dealDamage(enemy, player, true, 0.25)
 		else:
 			#If player blocks unsuccessfully
+			var tempStance =  player.stance;
 			player.set_stance(enemy.stance);
 			player.hit(true);
 			enemy.attack(true);
+			player.hp -= enemy.baseAtk * enemy.maxJudgeMult * enemy.maxSpMult * enemy.sp/enemy.maxSp;
+			dealDamage(enemy, player, true);
+			player.set_stance(tempStance);
 	else:
 		player.defend(false);
 	enemy.cpu_change_stance();
 
 func player_miss():
 	if(enemy.pose == enemy.Pose.IDLE):
+		var tempStance =  player.stance;
 		player.set_stance(enemy.stance);
 		player.hit(true);
 		enemy.attack(true);
+		dealDamage(enemy, player, true);
+		player.set_stance(tempStance);
 	enemy.cpu_change_stance();
 		
+func dealDamage(attacker, victim, perf, mult = 1):
+	var judgeMult = 1;
+	if(perf):
+		judgeMult = attacker.maxJudgeMult;
+	var damage = attacker.baseAtk * judgeMult * attacker.maxSpMult * (1+attacker.sp/attacker.maxSp) * mult;
+	print(damage);
+	victim.hp -= damage;
+
+func increaseCombo():
+	combo += 1;
+	player.sp = min(float(combo)/float(player.comboToSp), 1) * player.maxSp;
+	
+func resetCombo():
+	combo = 0;
+	player.sp = 0;
 
 func run():
 	song_pos += 1;
@@ -177,11 +216,14 @@ func run():
 		$music.play();
 		return;
 		
+func increaseBeat():
+	song_beat += 1;
+	enemy.sp =  min(enemy.sp+enemy.enemySpInc, enemy.maxSp);
 
 func checkBeat():
 	if(song_pos >= song_start + song_offset + song_beat * (1/song_bpf) + JD_BAD):
-		song_beat += 1;
-		combo = 0;
+		increaseBeat();
+		resetCombo();
 		judge = "Miss";
 		player_miss();
 

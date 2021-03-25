@@ -17,7 +17,7 @@ const Anim = {
 	DEFL_DOWN = "defl_down"
 }
 
-var character = Global.Character.TEMPLATE;
+#var character = Global.Character.TEMPLATE;
 var direction = -1;
 var actionTimer = 0;
 var shakeTimer = 0;
@@ -44,7 +44,21 @@ var effectObj = null;
 var blockEffectPos = [];
 var burstEffectPos = [];
 
+#Health points of the character
+var maxHp = 100.0;
+var hp = 100.0;
+var maxSp = 100.0;
+var sp = 0.0;
+
+#Stats
+var comboToSp = 30;
+var baseAtk = 1.0;
+var maxSpMult = 1.5;
+var maxJudgeMult = 1.5;
+var enemySpInc = 2;
+
 func _ready():
+	z_index = 50;
 	speed_scale = 2;
 	originalPos = self.position;
 	
@@ -72,6 +86,7 @@ func set_stance(stance):
 	default_pose();
 	
 func attack(movement = false):
+	z_index = 100;
 	if stance==Stance.UP: 
 		play(Anim.ATTACK_UP);
 	else:
@@ -129,6 +144,7 @@ func cpu_change_stance():
 
 func default_pose():
 	if(!playing || animation in [Anim.IDLE_UP, Anim.IDLE_DOWN, Anim.DEFL_UP, Anim.DEFL_DOWN] ):
+		z_index = 50;
 		if stance==Stance.UP: 
 			if pose==Pose.IDLE:
 				play(Anim.IDLE_UP);
@@ -141,7 +157,7 @@ func default_pose():
 				play(Anim.DEFL_DOWN);
 
 func _process(delta):
-	if(actionDelay>0):
+	if(actionDelay > 0):
 		actionDelay -= 1;
 	else:
 		if(pounceTimer>0.01):
