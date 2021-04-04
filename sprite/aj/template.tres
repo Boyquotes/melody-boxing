@@ -17,39 +17,9 @@
 
 [resource]
 animations = [ {
-"frames": [ ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ) ],
+"frames": [ ExtResource( 2 ), ExtResource( 11 ), ExtResource( 11 ), ExtResource( 11 ) ],
 "loop": false,
-"name": "def_down",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 12 ), ExtResource( 12 ), ExtResource( 12 ), ExtResource( 12 ) ],
-"loop": true,
-"name": "defl_up",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 6 ), ExtResource( 7 ), ExtResource( 7 ), ExtResource( 7 ) ],
-"loop": false,
-"name": "hit_up",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 6 ), ExtResource( 14 ), ExtResource( 13 ), ExtResource( 14 ) ],
-"loop": true,
-"name": "idle_up",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 2 ), ExtResource( 8 ), ExtResource( 10 ), ExtResource( 8 ) ],
-"loop": true,
-"name": "idle_down",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 12 ), ExtResource( 12 ), ExtResource( 12 ), ExtResource( 12 ) ],
-"loop": false,
-"name": "def_up",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 5 ), ExtResource( 3 ), ExtResource( 3 ), ExtResource( 3 ) ],
-"loop": false,
-"name": "atk_down",
+"name": "hit_down",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ) ],
@@ -62,8 +32,38 @@ animations = [ {
 "name": "atk_up",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 2 ), ExtResource( 11 ), ExtResource( 11 ), ExtResource( 11 ) ],
+"frames": [ ExtResource( 12 ), ExtResource( 12 ), ExtResource( 12 ), ExtResource( 12 ) ],
 "loop": false,
-"name": "hit_down",
+"name": "def_up",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ) ],
+"loop": false,
+"name": "def_down",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 6 ), ExtResource( 7 ), ExtResource( 7 ), ExtResource( 7 ) ],
+"loop": false,
+"name": "hit_up",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 5 ), ExtResource( 3 ), ExtResource( 3 ), ExtResource( 3 ) ],
+"loop": false,
+"name": "atk_down",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ), ExtResource( 8 ), ExtResource( 10 ), ExtResource( 8 ) ],
+"loop": true,
+"name": "idle_down",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 12 ), ExtResource( 12 ), ExtResource( 12 ), ExtResource( 12 ) ],
+"loop": true,
+"name": "defl_up",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 6 ), ExtResource( 14 ), ExtResource( 13 ), ExtResource( 14 ) ],
+"loop": true,
+"name": "idle_up",
 "speed": 5.0
 } ]

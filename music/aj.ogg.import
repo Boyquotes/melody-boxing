@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/aj.ogg-e6df17cfa23aa6ecdecdeb6bfd757dfb.oggstr"
+
+[deps]
+
+source_file="res://music/aj.ogg"
+dest_files=[ "res://.import/aj.ogg-e6df17cfa23aa6ecdecdeb6bfd757dfb.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,8 +1,8 @@
-[gd_scene load_steps=69 format=2]
+[gd_scene load_steps=71 format=2]
 
 [ext_resource path="res://sprite/melody/template.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://bg/background.png" type="Texture" id=2]
-[ext_resource path="res://music/pancake.ogg" type="AudioStream" id=3]
+[ext_resource path="res://music/aj.ogg" type="AudioStream" id=3]
 [ext_resource path="res://sprite/note.png" type="Texture" id=4]
 [ext_resource path="res://room/ring.gd" type="Script" id=5]
 [ext_resource path="res://room/character.gd" type="Script" id=6]
@@ -67,17 +67,23 @@
 [ext_resource path="res://sprite/effect/burst/burst (11).png" type="Texture" id=65]
 [ext_resource path="res://bg/stage.png" type="Texture" id=66]
 [ext_resource path="res://sprite/aj/template.tres" type="SpriteFrames" id=67]
+[ext_resource path="res://font/AttackGraffiti.ttf" type="DynamicFontData" id=68]
 
-[sub_resource type="SpriteFrames" id=1]
+[sub_resource type="DynamicFont" id=1]
+size = 73
+use_filter = true
+font_data = ExtResource( 68 )
+
+[sub_resource type="SpriteFrames" id=2]
 animations = [ {
-"frames": [ ExtResource( 22 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 8 ), ExtResource( 7 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 16 ), ExtResource( 19 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 35 ), ExtResource( 34 ), ExtResource( 30 ), ExtResource( 31 ), ExtResource( 33 ), ExtResource( 32 ), ExtResource( 24 ), ExtResource( 23 ), ExtResource( 27 ), ExtResource( 28 ), ExtResource( 20 ), ExtResource( 26 ), ExtResource( 29 ), ExtResource( 25 ), ExtResource( 21 ) ],
-"loop": false,
-"name": "block",
-"speed": 60.0
-}, {
 "frames": [ ExtResource( 46 ), ExtResource( 41 ), ExtResource( 56 ), ExtResource( 62 ), ExtResource( 42 ), ExtResource( 43 ), ExtResource( 64 ), ExtResource( 63 ), ExtResource( 58 ), ExtResource( 51 ), ExtResource( 65 ), ExtResource( 60 ), ExtResource( 44 ), ExtResource( 48 ), ExtResource( 45 ), ExtResource( 47 ), ExtResource( 49 ), ExtResource( 50 ), ExtResource( 52 ), ExtResource( 59 ), ExtResource( 54 ), ExtResource( 53 ), ExtResource( 55 ), ExtResource( 57 ), ExtResource( 61 ), ExtResource( 38 ), ExtResource( 37 ), ExtResource( 40 ), ExtResource( 39 ) ],
 "loop": false,
 "name": "burst",
+"speed": 60.0
+}, {
+"frames": [ ExtResource( 22 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 8 ), ExtResource( 7 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 16 ), ExtResource( 19 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 35 ), ExtResource( 34 ), ExtResource( 30 ), ExtResource( 31 ), ExtResource( 33 ), ExtResource( 32 ), ExtResource( 24 ), ExtResource( 23 ), ExtResource( 27 ), ExtResource( 28 ), ExtResource( 20 ), ExtResource( 26 ), ExtResource( 29 ), ExtResource( 25 ), ExtResource( 21 ) ],
+"loop": false,
+"name": "block",
 "speed": 60.0
 } ]
 
@@ -104,31 +110,33 @@ scale = Vector2( 0.951714, 0.951714 )
 texture = ExtResource( 4 )
 
 [node name="spr_left" type="AnimatedSprite" parent="."]
-position = Vector2( -167.247, 242.082 )
+position = Vector2( -209.794, 243.97 )
 z_index = 1
 frames = ExtResource( 1 )
-animation = "hit_down"
-frame = 3
+animation = "idle_up"
+speed_scale = 0.5
 playing = true
+offset = Vector2( 0.13, 0 )
 script = ExtResource( 6 )
 
 [node name="spr_right" type="AnimatedSprite" parent="."]
-position = Vector2( 259.232, 245.336 )
+position = Vector2( 197.077, 245.336 )
 frames = ExtResource( 67 )
-animation = "defl_up"
-frame = 2
-speed_scale = 0.9
+animation = "idle_up"
+frame = 3
+speed_scale = 0.5
 playing = true
 flip_h = true
 script = ExtResource( 6 )
 
-[node name="combo" type="RichTextLabel" parent="."]
-margin_left = -420.99
-margin_top = -296.098
-margin_right = -325.99
-margin_bottom = -280.098
-rect_scale = Vector2( 10, 10 )
+[node name="combo" type="Label" parent="."]
+margin_left = -191.0
+margin_top = -318.092
+margin_right = 191.0
+margin_bottom = -135.092
+custom_fonts/font = SubResource( 1 )
 text = "0"
+align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -138,11 +146,12 @@ stream = ExtResource( 3 )
 volume_db = -10.722
 
 [node name="spr_effect" type="AnimatedSprite" parent="."]
+light_mask = 0
 position = Vector2( -1234.66, 319.157 )
 scale = Vector2( 5.81527, 5.81527 )
 z_index = 100
 z_as_relative = false
-frames = SubResource( 1 )
+frames = SubResource( 2 )
 animation = "block"
 speed_scale = 1.5
 script = ExtResource( 36 )

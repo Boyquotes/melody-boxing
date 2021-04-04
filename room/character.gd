@@ -35,6 +35,7 @@ var pounceIntensity = 0;
 var isCpu = false;
 var cpuDifficulty = 2;
 var cpuRepeat = cpuDifficulty;
+var cpuRepeatAllowance = 1
 
 var pose = Pose.IDLE;
 var stance = Stance.UP;
@@ -46,6 +47,7 @@ var burstEffectPos = [];
 
 #Health points of the character
 var maxHp = 100.0;
+var hpGhost = 100.0;
 var hp = 100.0;
 var maxSp = 100.0;
 var sp = 0.0;
@@ -134,11 +136,23 @@ func cpu_change_stance():
 		cpuRepeat-=1;
 		return;
 	
+	var prev_pose = pose;
+	var prev_stance = stance;
+	
 	var pose_list = [Pose.IDLE, Pose.DEFEND];
 	var stance_list = [Stance.UP, Stance.DOWN];
 	
 	pose = pose_list[randi() % pose_list.size()];
 	stance = stance_list[randi() % stance_list.size()];
+	
+	while(prev_pose == pose && prev_stance == stance && cpuRepeatAllowance <= 0):
+		pose = pose_list[randi() % pose_list.size()];
+		stance = stance_list[randi() % stance_list.size()];
+		
+	if(prev_pose == pose && prev_stance == stance):
+		cpuRepeatAllowance -= 1;
+	else:
+		cpuRepeatAllowance = 1;
 	
 	cpuRepeat = cpuDifficulty;
 
@@ -157,6 +171,8 @@ func default_pose():
 				play(Anim.DEFL_DOWN);
 
 func _process(delta):
+	hpGhost = hp + ((hpGhost-hp)/1.05);
+	
 	if(actionDelay > 0):
 		actionDelay -= 1;
 	else:

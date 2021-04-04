@@ -18,12 +18,12 @@ const JD_BAD = 15;
 var song_pos = 0;
 var song_beat = 0;
 
-var song_bpm = 72;
+var song_bpm = 70;
 #var song_bpm = 10.0;
 var song_bps = float(song_bpm)/60;
 var song_bpf = song_bps/60;
 var song_start = 100;
-var song_offset = 85;
+var song_offset = 0;
 
 var song_started = false;
 
@@ -38,6 +38,8 @@ const END_POS = Vector2(-797,65);
 
 var player = null;
 var enemy = null;
+
+var hp_ui = preload("res://sprite/ui/healthbar.png");
 
 func _ready():
 	if side == 0:
@@ -55,7 +57,7 @@ func _ready():
 func _process(delta):
 	run();
 	update();
-	$combo.text = String(combo) + " " + String(judge) ;
+	$combo.text = String(combo) + "\n" + String(judge) ;
 	
 
 func _draw():
@@ -65,16 +67,61 @@ func _draw():
 		if(x_ratio[i] != 1):
 			draw_texture($spr_note.texture , Vector2(END_POS.x + (START_POS.x - END_POS.x) * x_ratio[i], START_POS.y));
 	
-	draw_rect(Rect2(Vector2(-position.x*2+10,-position.y*2+10), Vector2(800, 60)), Color.darkgray);
-	draw_rect(Rect2(Vector2(position.x*2-10,-position.y*2+10), Vector2(-800, 60)), Color.darkgray);
-	draw_rect(Rect2(Vector2(-position.x*2+10,-position.y*2+10), Vector2(800*(player.hp/player.maxHp), 60)), Color.green);
-	draw_rect(Rect2(Vector2(position.x*2-10,-position.y*2+10), Vector2(-800*(enemy.hp/enemy.maxHp), 60)), Color.green);
+	#Position definition
+	var ui_offset_top = 10
+	var ui_offset_side = 10
+	var ui_size_height = 140
+	var ui_size_width = 900
+	
+	var hp_offset_top = 45
+	var hp_offset_side = 125
+	var hp_size_height = 50
+	var hp_size_width = 770
+	
+	var sp_offset_top = 113
+	var sp_offset_side = 130
+	var sp_size_height = 30
+	var sp_size_width = 464
+	
+	var left_ui_pos = Vector2(-position.x*2+ui_offset_side,-position.y*2+ui_offset_top)
+	var left_ui_size = Vector2(ui_size_width, ui_size_height)
+	
+	var left_hp_pos = Vector2(-position.x*2+hp_offset_side,-position.y*2+hp_offset_top)
+	var left_hpbg_size = Vector2(hp_size_width, hp_size_height)
+	var left_hp_size = Vector2(hp_size_width*(player.hp/player.maxHp), hp_size_height)
+	var left_hpghost_size = Vector2(hp_size_width*(player.hpGhost/player.maxHp), hp_size_height)
+	
+	var left_sp_pos = Vector2(-position.x*2+sp_offset_side,-position.y*2+sp_offset_top)
+	var left_spbg_size = Vector2(sp_size_width, sp_size_height)
+	var left_sp_size = Vector2(sp_size_width*(player.sp/player.maxSp), sp_size_height)
+	
+	var right_ui_pos = Vector2(position.x*2-ui_offset_side-ui_size_width,-position.y*2+ui_offset_top)
+	var right_ui_size = Vector2(-ui_size_width, ui_size_height)
+	
+	var right_hp_pos = Vector2(position.x*2-hp_offset_side,-position.y*2+hp_offset_top)
+	var right_hpbg_size = Vector2(-hp_size_width, hp_size_height)
+	var right_hp_size = Vector2(-hp_size_width*(enemy.hp/enemy.maxHp), hp_size_height)
+	var right_hpghost_size = Vector2(-hp_size_width*(enemy.hpGhost/enemy.maxHp), hp_size_height)
+	
+	var right_sp_pos = Vector2(position.x*2-sp_offset_side,-position.y*2+sp_offset_top)
+	var right_spbg_size = Vector2(-sp_size_width, sp_size_height)
+	var right_sp_size = Vector2(-sp_size_width*(enemy.sp/enemy.maxSp), sp_size_height)
+	
+	draw_rect(Rect2(left_hp_pos, left_hpbg_size), Color.dimgray);
+	draw_rect(Rect2(right_hp_pos, right_hpbg_size), Color.dimgray);
+	draw_rect(Rect2(left_hp_pos, left_hpghost_size), Color.white);
+	draw_rect(Rect2(right_hp_pos, right_hpghost_size), Color.white);
+	draw_rect(Rect2(left_hp_pos, left_hp_size), Color.green);
+	draw_rect(Rect2(right_hp_pos, right_hp_size), Color.green);
 
-	draw_rect(Rect2(Vector2(-position.x*2+10,-position.y*2+80), Vector2(800, 30)), Color.darkgray);
-	draw_rect(Rect2(Vector2(position.x*2-10,-position.y*2+80), Vector2(-800, 30)), Color.darkgray);
-	draw_rect(Rect2(Vector2(-position.x*2+10,-position.y*2+80), Vector2(800*(player.sp/player.maxSp), 30)), Color.orange);
-	draw_rect(Rect2(Vector2(position.x*2-10,-position.y*2+80), Vector2(-800*(enemy.sp/enemy.maxSp), 30)), Color.orange);
+	draw_rect(Rect2(left_sp_pos, left_spbg_size), Color.dimgray);
+	draw_rect(Rect2(right_sp_pos, right_spbg_size), Color.dimgray);
+	draw_rect(Rect2(left_sp_pos, left_sp_size), Color.orange);
+	draw_rect(Rect2(right_sp_pos, right_sp_size), Color.orange);
 
+	draw_texture_rect(hp_ui, Rect2(left_ui_pos, left_ui_size),false )
+	draw_texture_rect(hp_ui, Rect2(right_ui_pos, right_ui_size),false )
+	
 #	x_ratio = -(song_pos - (song_start + song_offset + song_beat * (1/song_bpf))) / 100.0;
 #	print_debug(x_ratio);
 
