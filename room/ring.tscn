@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=2]
+[gd_scene load_steps=80 format=2]
 
 [ext_resource path="res://sprite/melody/template.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://bg/background.png" type="Texture" id=2]
@@ -68,9 +68,18 @@
 [ext_resource path="res://bg/stage.png" type="Texture" id=66]
 [ext_resource path="res://sprite/aj/template.tres" type="SpriteFrames" id=67]
 [ext_resource path="res://font/AttackGraffiti.ttf" type="DynamicFontData" id=68]
+[ext_resource path="res://sprite/effect/light.png" type="Texture" id=69]
+[ext_resource path="res://sound/block.wav" type="AudioStream" id=70]
+[ext_resource path="res://sound/hit.wav" type="AudioStream" id=71]
+[ext_resource path="res://room/screen.gd" type="Script" id=72]
+[ext_resource path="res://bg/screen.png" type="Texture" id=73]
+[ext_resource path="res://bg/crowd_1.png" type="Texture" id=74]
+[ext_resource path="res://bg/crowd_3.png" type="Texture" id=75]
+[ext_resource path="res://bg/crowd_2.png" type="Texture" id=76]
+[ext_resource path="res://room/notes.gd" type="Script" id=77]
 
 [sub_resource type="DynamicFont" id=1]
-size = 73
+size = 140
 use_filter = true
 font_data = ExtResource( 68 )
 
@@ -90,56 +99,123 @@ animations = [ {
 [node name="stage" type="Node2D"]
 position = Vector2( 511, 250 )
 scale = Vector2( 0.5, 0.5 )
-z_index = -1000
+z_index = 100
+z_as_relative = false
 script = ExtResource( 5 )
 
-[node name="spr_background" type="Sprite" parent="."]
+[node name="notes" type="Node2D" parent="."]
+z_as_relative = false
+script = ExtResource( 77 )
+
+[node name="background" type="Node2D" parent="."]
+
+[node name="spr_screen" type="Sprite" parent="background"]
+position = Vector2( 0, -280 )
+scale = Vector2( 1.5, 1.5 )
+z_index = -50
+z_as_relative = false
+texture = ExtResource( 73 )
+
+[node name="spr_background" type="Sprite" parent="background"]
 show_behind_parent = true
-position = Vector2( 1.97141, 100.251 )
+position = Vector2( 3.97144, 100.251 )
+z_index = -100
+z_as_relative = false
 texture = ExtResource( 2 )
 
-[node name="spr_stage" type="Sprite" parent="."]
-position = Vector2( 3.42358, 55.0283 )
+[node name="crowd" type="Node2D" parent="background"]
+z_as_relative = false
+
+[node name="spr_crowd1" type="Sprite" parent="background/crowd"]
+position = Vector2( 4.40039, 326.153 )
+z_index = -15
+z_as_relative = false
+texture = ExtResource( 74 )
+
+[node name="spr_crowd2" type="Sprite" parent="background/crowd"]
+position = Vector2( -10.6187, 107.937 )
+z_index = -16
+z_as_relative = false
+texture = ExtResource( 76 )
+
+[node name="spr_crowd3" type="Sprite" parent="background/crowd"]
+position = Vector2( -1.3042, 37.6716 )
+z_index = -17
+z_as_relative = false
+texture = ExtResource( 75 )
+
+[node name="spr_stage" type="Sprite" parent="background"]
+position = Vector2( 0.753906, 55.0283 )
+scale = Vector2( 1.00261, 1 )
+z_as_relative = false
 texture = ExtResource( 66 )
+
+[node name="light" type="Sprite" parent="background"]
+position = Vector2( -361.185, -702.962 )
+scale = Vector2( 2, 2 )
+z_index = 5
+z_as_relative = false
+texture = ExtResource( 69 )
+offset = Vector2( 0, 325 )
+
+[node name="light2" type="Sprite" parent="background"]
+position = Vector2( 390.014, -702.962 )
+scale = Vector2( 2, 2 )
+z_index = 5
+z_as_relative = false
+texture = ExtResource( 69 )
+offset = Vector2( 0, 325 )
 
 [node name="spr_note" type="Sprite" parent="."]
 visible = false
 show_behind_parent = true
 position = Vector2( 1052.14, 224.979 )
 scale = Vector2( 0.951714, 0.951714 )
+z_index = -10
 texture = ExtResource( 4 )
 
+[node name="screen" type="Node2D" parent="."]
+position = Vector2( 0, -220 )
+z_index = -20
+z_as_relative = false
+script = ExtResource( 72 )
+
+[node name="judge" type="Label" parent="screen"]
+margin_left = -290.0
+margin_top = -170.0
+margin_right = 290.0
+margin_bottom = 140.0
+rect_pivot_offset = Vector2( 290, 155 )
+custom_fonts/font = SubResource( 1 )
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="spr_left" type="AnimatedSprite" parent="."]
-position = Vector2( -209.794, 243.97 )
+position = Vector2( -180, 350 )
+scale = Vector2( 0.8, 0.8 )
 z_index = 1
+z_as_relative = false
 frames = ExtResource( 1 )
 animation = "idle_up"
+frame = 1
 speed_scale = 0.5
 playing = true
 offset = Vector2( 0.13, 0 )
 script = ExtResource( 6 )
 
 [node name="spr_right" type="AnimatedSprite" parent="."]
-position = Vector2( 197.077, 245.336 )
+position = Vector2( 180, 350 )
+scale = Vector2( 0.8, 0.8 )
+z_as_relative = false
 frames = ExtResource( 67 )
 animation = "idle_up"
-frame = 3
 speed_scale = 0.5
 playing = true
 flip_h = true
 script = ExtResource( 6 )
-
-[node name="combo" type="Label" parent="."]
-margin_left = -191.0
-margin_top = -318.092
-margin_right = 191.0
-margin_bottom = -135.092
-custom_fonts/font = SubResource( 1 )
-text = "0"
-align = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
@@ -147,14 +223,24 @@ volume_db = -10.722
 
 [node name="spr_effect" type="AnimatedSprite" parent="."]
 light_mask = 0
-position = Vector2( -1234.66, 319.157 )
-scale = Vector2( 5.81527, 5.81527 )
+position = Vector2( -1135.88, 417.934 )
+scale = Vector2( 3.83974, 3.83974 )
 z_index = 100
 z_as_relative = false
 frames = SubResource( 2 )
 animation = "block"
 speed_scale = 1.5
 script = ExtResource( 36 )
+
+[node name="hit" type="AudioStreamPlayer" parent="spr_effect"]
+stream = ExtResource( 71 )
+volume_db = -15.0
+pitch_scale = 1.5
+
+[node name="block" type="AudioStreamPlayer" parent="spr_effect"]
+stream = ExtResource( 70 )
+volume_db = -15.0
+pitch_scale = 1.5
 [connection signal="animation_finished" from="spr_left" to="spr_left" method="on_animation_end"]
 [connection signal="animation_finished" from="spr_right" to="spr_right" method="on_animation_end"]
 [connection signal="animation_finished" from="spr_effect" to="spr_effect" method="_on_spr_effect_animation_finished"]

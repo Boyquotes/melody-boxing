@@ -20,8 +20,8 @@ var song_beat = 0;
 
 var song_bpm = 70;
 #var song_bpm = 10.0;
-var song_bps = float(song_bpm)/60;
-var song_bpf = song_bps/60;
+var song_bps = float(song_bpm)/60.0;
+var song_bpf = song_bps/60.0;
 var song_start = 100;
 var song_offset = 0;
 
@@ -57,15 +57,20 @@ func _ready():
 func _process(delta):
 	run();
 	update();
-	$combo.text = String(combo) + "\n" + String(judge) ;
+#	$combo.set_text(String(combo) + "\n" + String(judge)) ;
+	
+#	$combo.set_note_progress(clamp( -(song_pos - (song_start + song_offset + (song_beat) * (1/song_bpf))) / 100.0 , 0.0, 1.0) );	
+	#$screen.set_note_progress(clamp( -(song_pos - (song_start + song_offset + (song_beat) * (1/song_bpf))) * song_bpf , 0.0, 1.0) );	
+	$screen.set_note_progress(clamp( fmod(song_pos - (song_start + song_offset ) , 1/song_bpf) * song_bpf, 0.0, 1.0) );	
+	
+	#Rotate light
+	$background/light.rotation = sin(OS.get_ticks_msec()/800.0) * PI/5
+	$background/light2.rotation = -cos(OS.get_ticks_msec()/800.0) * PI/5
 	
 
 func _draw():
-	var x_ratio = []; 
-	for i in range(10):
-		x_ratio.insert(i, clamp( -(song_pos - (song_start + song_offset + (song_beat+i) * (1/song_bpf))) / 100.0 , 0.0, 1.0) ) ;
-		if(x_ratio[i] != 1):
-			draw_texture($spr_note.texture , Vector2(END_POS.x + (START_POS.x - END_POS.x) * x_ratio[i], START_POS.y));
+	
+#	print(clamp( -(song_pos - (song_start + song_offset + (song_beat) * (1/song_bpf))) / 100.0 , 0.0, 1.0))
 	
 	#Position definition
 	var ui_offset_top = 10
@@ -75,7 +80,7 @@ func _draw():
 	
 	var hp_offset_top = 45
 	var hp_offset_side = 125
-	var hp_size_height = 50
+	var hp_size_height = 51
 	var hp_size_width = 770
 	
 	var sp_offset_top = 113
@@ -93,7 +98,7 @@ func _draw():
 	
 	var left_sp_pos = Vector2(-position.x*2+sp_offset_side,-position.y*2+sp_offset_top)
 	var left_spbg_size = Vector2(sp_size_width, sp_size_height)
-	var left_sp_size = Vector2(sp_size_width*(player.sp/player.maxSp), sp_size_height)
+	var left_sp_size = Vector2(sp_size_width*(player.spGhost/player.maxSp), sp_size_height)
 	
 	var right_ui_pos = Vector2(position.x*2-ui_offset_side-ui_size_width,-position.y*2+ui_offset_top)
 	var right_ui_size = Vector2(-ui_size_width, ui_size_height)
@@ -105,7 +110,7 @@ func _draw():
 	
 	var right_sp_pos = Vector2(position.x*2-sp_offset_side,-position.y*2+sp_offset_top)
 	var right_spbg_size = Vector2(-sp_size_width, sp_size_height)
-	var right_sp_size = Vector2(-sp_size_width*(enemy.sp/enemy.maxSp), sp_size_height)
+	var right_sp_size = Vector2(-sp_size_width*(enemy.spGhost/enemy.maxSp), sp_size_height)
 	
 	draw_rect(Rect2(left_hp_pos, left_hpbg_size), Color.dimgray);
 	draw_rect(Rect2(right_hp_pos, right_hpbg_size), Color.dimgray);
@@ -142,7 +147,7 @@ func _input(ev):
 			song_pos > check_window - JD_PERFECT):
 			increaseCombo();
 			increaseBeat();
-			judge = "Perfect";
+			$screen.set_text("Great") ;
 			if(ev.is_action_pressed(attack_btn)):
 				player_attack(true);
 			if(ev.is_action_pressed(defend_btn)):
@@ -152,7 +157,7 @@ func _input(ev):
 			song_pos > check_window - JD_FAIR):
 			increaseCombo();
 			increaseBeat();
-			judge = "Good";
+			$screen.set_text("Good") ;
 			if(ev.is_action_pressed(attack_btn)):
 				player_attack();
 			if(ev.is_action_pressed(defend_btn)):
@@ -162,7 +167,7 @@ func _input(ev):
 			song_pos > check_window - JD_BAD):
 			resetCombo();
 			increaseBeat();
-			judge = "Bad";
+			$screen.set_text("Bad") ;
 			player_miss();
 
 			
@@ -270,6 +275,6 @@ func checkBeat():
 	if(song_pos >= song_start + song_offset + song_beat * (1/song_bpf) + JD_BAD):
 		increaseBeat();
 		resetCombo();
-		judge = "Miss";
+		$screen.set_text("Miss") ;
 		player_miss();
 

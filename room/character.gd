@@ -50,6 +50,7 @@ var maxHp = 100.0;
 var hpGhost = 100.0;
 var hp = 100.0;
 var maxSp = 100.0;
+var spGhost = 0.0;
 var sp = 0.0;
 
 #Stats
@@ -172,6 +173,7 @@ func default_pose():
 
 func _process(delta):
 	hpGhost = hp + ((hpGhost-hp)/1.05);
+	spGhost = sp + ((spGhost-sp)/1.05);
 	
 	if(actionDelay > 0):
 		actionDelay -= 1;
