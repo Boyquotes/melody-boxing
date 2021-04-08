@@ -1,4 +1,4 @@
-[gd_scene load_steps=80 format=2]
+[gd_scene load_steps=96 format=2]
 
 [ext_resource path="res://sprite/melody/template.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://bg/background.png" type="Texture" id=2]
@@ -77,13 +77,36 @@
 [ext_resource path="res://bg/crowd_3.png" type="Texture" id=75]
 [ext_resource path="res://bg/crowd_2.png" type="Texture" id=76]
 [ext_resource path="res://room/notes.gd" type="Script" id=77]
+[ext_resource path="res://room/crowd.gd" type="Script" id=78]
+[ext_resource path="res://room/note_burst.gd" type="Script" id=79]
+[ext_resource path="res://sprite/effect/noteburst/12.png" type="Texture" id=80]
+[ext_resource path="res://sprite/effect/noteburst/3.png" type="Texture" id=81]
+[ext_resource path="res://sprite/effect/noteburst/8.png" type="Texture" id=82]
+[ext_resource path="res://sprite/effect/noteburst/2.png" type="Texture" id=83]
+[ext_resource path="res://sprite/effect/noteburst/4.png" type="Texture" id=84]
+[ext_resource path="res://sprite/effect/noteburst/9.png" type="Texture" id=85]
+[ext_resource path="res://sprite/effect/noteburst/1.png" type="Texture" id=86]
+[ext_resource path="res://sprite/effect/noteburst/0.png" type="Texture" id=87]
+[ext_resource path="res://sprite/effect/noteburst/5.png" type="Texture" id=88]
+[ext_resource path="res://sprite/effect/noteburst/6.png" type="Texture" id=89]
+[ext_resource path="res://sprite/effect/noteburst/7.png" type="Texture" id=90]
+[ext_resource path="res://sprite/effect/noteburst/10.png" type="Texture" id=91]
+[ext_resource path="res://sprite/effect/noteburst/11.png" type="Texture" id=92]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 87 ), ExtResource( 86 ), ExtResource( 83 ), ExtResource( 81 ), ExtResource( 84 ), ExtResource( 88 ), ExtResource( 89 ), ExtResource( 90 ), ExtResource( 82 ), ExtResource( 85 ), ExtResource( 91 ), ExtResource( 92 ), ExtResource( 80 ) ],
+"loop": true,
+"name": "default",
+"speed": 60.0
+} ]
+
+[sub_resource type="DynamicFont" id=2]
 size = 140
 use_filter = true
 font_data = ExtResource( 68 )
 
-[sub_resource type="SpriteFrames" id=2]
+[sub_resource type="SpriteFrames" id=3]
 animations = [ {
 "frames": [ ExtResource( 46 ), ExtResource( 41 ), ExtResource( 56 ), ExtResource( 62 ), ExtResource( 42 ), ExtResource( 43 ), ExtResource( 64 ), ExtResource( 63 ), ExtResource( 58 ), ExtResource( 51 ), ExtResource( 65 ), ExtResource( 60 ), ExtResource( 44 ), ExtResource( 48 ), ExtResource( 45 ), ExtResource( 47 ), ExtResource( 49 ), ExtResource( 50 ), ExtResource( 52 ), ExtResource( 59 ), ExtResource( 54 ), ExtResource( 53 ), ExtResource( 55 ), ExtResource( 57 ), ExtResource( 61 ), ExtResource( 38 ), ExtResource( 37 ), ExtResource( 40 ), ExtResource( 39 ) ],
 "loop": false,
@@ -107,6 +130,17 @@ script = ExtResource( 5 )
 z_as_relative = false
 script = ExtResource( 77 )
 
+[node name="note_burst" type="Node2D" parent="notes"]
+z_index = 100
+z_as_relative = false
+script = ExtResource( 79 )
+
+[node name="note_burst" type="AnimatedSprite" parent="notes/note_burst"]
+visible = false
+scale = Vector2( 1.78479, 1.78479 )
+frames = SubResource( 1 )
+playing = true
+
 [node name="background" type="Node2D" parent="."]
 
 [node name="spr_screen" type="Sprite" parent="background"]
@@ -125,6 +159,7 @@ texture = ExtResource( 2 )
 
 [node name="crowd" type="Node2D" parent="background"]
 z_as_relative = false
+script = ExtResource( 78 )
 
 [node name="spr_crowd1" type="Sprite" parent="background/crowd"]
 position = Vector2( 4.40039, 326.153 )
@@ -186,7 +221,7 @@ margin_top = -170.0
 margin_right = 290.0
 margin_bottom = 140.0
 rect_pivot_offset = Vector2( 290, 155 )
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 align = 1
 valign = 1
 __meta__ = {
@@ -200,7 +235,6 @@ z_index = 1
 z_as_relative = false
 frames = ExtResource( 1 )
 animation = "idle_up"
-frame = 1
 speed_scale = 0.5
 playing = true
 offset = Vector2( 0.13, 0 )
@@ -212,6 +246,7 @@ scale = Vector2( 0.8, 0.8 )
 z_as_relative = false
 frames = ExtResource( 67 )
 animation = "idle_up"
+frame = 3
 speed_scale = 0.5
 playing = true
 flip_h = true
@@ -227,7 +262,7 @@ position = Vector2( -1135.88, 417.934 )
 scale = Vector2( 3.83974, 3.83974 )
 z_index = 100
 z_as_relative = false
-frames = SubResource( 2 )
+frames = SubResource( 3 )
 animation = "block"
 speed_scale = 1.5
 script = ExtResource( 36 )
@@ -241,6 +276,7 @@ pitch_scale = 1.5
 stream = ExtResource( 70 )
 volume_db = -15.0
 pitch_scale = 1.5
+[connection signal="animation_finished" from="notes/note_burst/note_burst" to="notes/note_burst" method="_on_note_burst_animation_finished"]
 [connection signal="animation_finished" from="spr_left" to="spr_left" method="on_animation_end"]
 [connection signal="animation_finished" from="spr_right" to="spr_right" method="on_animation_end"]
 [connection signal="animation_finished" from="spr_effect" to="spr_effect" method="_on_spr_effect_animation_finished"]

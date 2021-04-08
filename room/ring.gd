@@ -148,6 +148,7 @@ func _input(ev):
 			increaseCombo();
 			increaseBeat();
 			$screen.set_text("Great") ;
+			$notes/note_burst.burst($notes.getBurstPos());
 			if(ev.is_action_pressed(attack_btn)):
 				player_attack(true);
 			if(ev.is_action_pressed(defend_btn)):
@@ -158,6 +159,7 @@ func _input(ev):
 			increaseCombo();
 			increaseBeat();
 			$screen.set_text("Good") ;
+			$notes/note_burst.burst($notes.getBurstPos());
 			if(ev.is_action_pressed(attack_btn)):
 				player_attack();
 			if(ev.is_action_pressed(defend_btn)):
