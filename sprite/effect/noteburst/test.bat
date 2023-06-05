@@ -1,0 +1,1 @@
+FOR /L %%G IN (0,1,12) DO (magick %%G.png -colorspace Gray %%G.png)
